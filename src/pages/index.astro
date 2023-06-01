@@ -1,11 +1,20 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Greeting from "../components/Greeting";
 
-const pageTitle = "Home Page"
+import BaseHead from "../components/BaseHead.astro";
+import {SITE_DESCRIPTION, SITE_TITLE} from "../consts";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 ---
-
-<BaseLayout pageTitle={pageTitle}>
-	<h2>My awesome blog subtitle</h2>
-	<Greeting client:load messages={["Hi", "Hello", "Howdy", "Hey there"]}/>
-</BaseLayout>
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header title={SITE_TITLE} />
+		<main>
+			<h1>Home</h1>
+		</main>
+		<Footer />
+	</body>
+</html>

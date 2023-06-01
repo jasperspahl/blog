@@ -1,0 +1,22 @@
+---
+title: "Erster Blog"
+description: "Erster Blogeintrag"
+pubDate: "2023-06-01"
+tags: ["blog", "test", "IT"]
+---
+
+## Mein erster Blogeintrag
+
+Dies ist mein erster Blogeintrag.
+```js
+console.log("Hello World");
+```
+
+## Zweiter Abschnitt
+
+Dies ist der zweite Abschnitt.
+```rust
+fn main() {
+    println!("Hello World");
+}
+```

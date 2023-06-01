@@ -1,0 +1,58 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import ImageCarousel from "../components/ImageCarousel.astro";
+
+type Props = CollectionEntry<'blog'>['data'];
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props
+---
+
+<html lang="de">
+<head>
+    <BaseHead title={title} description={description} />
+    <style>
+        .title {
+            font-size: 2em;
+            margin: 0.25em 0 0;
+        }
+        hr {
+            border-top: 1px solid #ddd;
+            margin: 1rem 0;
+        }
+        .last-updated-on {
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+<Header />
+<main>
+    <article>
+        {
+            heroImage && heroImage.length  > 0 &&
+            <ImageCarousel>
+                <ul>
+                    {heroImage.map(image => <li><img src={image} alt="" /></li>)}
+                </ul>
+            </ImageCarousel>
+        }
+        <h1 class="title">{title}</h1>
+        <FormattedDate date={pubDate} />
+        {
+            updatedDate && (
+                        <div class="last-updated-on">
+                            Zuletzt bearbeiten am <FormattedDate date={updatedDate} />
+                        </div>
+            )
+        }
+        <hr />
+        <slot />
+    </article>
+</main>
+<Footer />
+</body>
+</html>

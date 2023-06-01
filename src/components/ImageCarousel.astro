@@ -1,0 +1,70 @@
+---
+---
+<section>
+    <div class="carousel" data-carousel>
+        <button data-carousel-button="prev">&lArr;</button>
+        <button data-carousel-button="next">&rArr;</button>
+        <slot/>
+    </div>
+</section>
+<script>
+    const buttons = document.querySelectorAll('[data-carousel-button]');
+    const slides = buttons[0].closest("[data-carousel]").querySelector("ul").children;
+    if (slides.length >= 1) {
+        buttons.forEach(button => button.dataset.hidden = true);
+    }
+    slides.item(0).dataset.active = true;
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+                const offset = button.dataset.carouselButton === 'next' ? 1: -1;
+                const slides = button.closest("[data-carousel]").querySelector("ul");
+                const activeSlide = slides.querySelector("[data-active]")
+                let newIndex = [...slides.children].indexOf(activeSlide) + offset
+                if (newIndex < 0) newIndex = slides.children.length - 1
+                if (newIndex >= slides.children.length) newIndex = 0
+                slides.children[newIndex].dataset.active = true
+                delete activeSlide.dataset.active
+        })
+    });
+</script>
+
+<style>
+    section {
+        height: 30vh;
+        display:flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        margin-bottom: 1.5em;
+    }
+    .carousel {
+        width: 100vw;
+        height: 30vh;
+        position: absolute;
+    }
+    @media screen and (min-width: 636px) {
+        section {
+            height: 55vh;
+        }
+        .carousel {
+            height: 55vh;
+        }
+    }
+    button {
+        position: absolute;
+        background: none;
+        border: none;
+        font-size: 3rem;
+        top: calc(50% - 2rem);
+        z-index: 1000;
+    }
+    button[data-carousel-button="next"]{
+        right:0;
+    }
+    button[data-carousel-button="prev"]{
+        left:0;
+    }
+    button[data-hidden]{
+        display: none;
+    }
+</style>

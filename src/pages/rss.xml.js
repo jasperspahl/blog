@@ -1,10 +1,16 @@
 import rss, { pagesGlobToRssItems} from "@astrojs/rss";
-export async function get() {
+import { getCollection } from "astro:content";
+import {SITE_DESCRIPTION, SITE_TITLE} from "../consts";
+export async function get(context) {
+    const posts = await getCollection('blog');
     return rss({
-        title: "jasper's blog",
-        description: "My blog about It and Cycling",
-        site: "https://jasperspahl.netlify.app/",
-        items: await pagesGlobToRssItems(import.meta.glob('./**/*.md')),
+        title: SITE_TITLE,
+        description: SITE_DESCRIPTION,
+        site: context.site,
+        items: posts.map(post => ({
+            ...post.data,
+            link: `/blog/${post.slug}`
+        })),
         customData: `<language>de-de</language>`
     })
 }

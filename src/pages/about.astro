@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import Layout from "../layouts/BlogPost.astro";
 const pageTitle = "About Me"
 
 const identity = {
@@ -10,7 +10,10 @@ const identity = {
 };
 const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "Writing Docs"];
 ---
-<BaseLayout pageTitle={pageTitle}>
+<Layout title="About me"
+		pubDate={new Date("1. Juli 2023")}
+		updatedDate={new Date("1. Juli 2023")}
+>
 	<p>Here are a few facts about me:</p>
 	<ul>
 	  <li>My name is {identity.firstName}.</li>
@@ -23,4 +26,3 @@ const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "Writing Docs"];
 	<ul>
 	  {skills.map((skill) => <li class="skill">{skill}</li>)}
 	</ul>
-</BaseLayout>
