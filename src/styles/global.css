@@ -4,14 +4,16 @@
 body {
     font-family: Verdana, sans-serif;
     margin: auto;
-    padding: 20px;
-    max-width: 65ch;
     text-align: left;
     background-color: #fff;
     word-wrap: break-word;
     overflow-wrap: break-word;
     line-height: 1.5;
     color: #444;
+}
+main {
+    width: 65ch;
+    margin: auto;
 }
 h1,
 h2,
@@ -62,21 +64,4 @@ blockquote {
     padding: 2px 0 2px 20px;
     margin: 0;
     font-style: italic;
-}
-/* image carousel */
-
-.carousel li {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    text-decoration: none;
-}
-.carousel li[data-active] {
-    opacity: unset;
-}
-.carousel img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
 }

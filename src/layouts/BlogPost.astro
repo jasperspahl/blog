@@ -4,7 +4,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import FormattedDate from "../components/FormattedDate.astro";
-import ImageCarousel from "../components/ImageCarousel.astro";
+import ImageCarousel from "../components/preact/ImageCarousel.tsx";
 
 type Props = CollectionEntry<'blog'>['data'];
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props
@@ -13,11 +13,12 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
 <html lang="de">
 <head>
     <BaseHead title={title} description={description} />
-    <style>
+    <style lang="scss">
         .title {
             font-size: 2em;
             margin: 0.25em 0 0;
         }
+
         hr {
             border-top: 1px solid #ddd;
             margin: 1rem 0;
@@ -33,12 +34,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
 <main>
     <article>
         {
-            heroImage && heroImage.length  > 0 &&
-            <ImageCarousel>
-                <ul>
-                    {heroImage.map(image => <li><img src={image} alt="" /></li>)}
-                </ul>
-            </ImageCarousel>
+            heroImage && heroImage.length > 0 &&
+            <ImageCarousel client:idle images={heroImage}/>
         }
         <h1 class="title">{title}</h1>
         <FormattedDate date={pubDate} />

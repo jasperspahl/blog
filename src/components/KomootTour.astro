@@ -1,3 +1,22 @@
 ---
-$END$
+export interface Props {
+    tour_id: number;
+    show_height: boolean;
+    show_gallery: boolean;
+}
+const {tour_id, show_height, show_gallery} = Astro.props;
+const show_more = show_gallery || show_height;
+const show_both = show_gallery && show_height;
+const src = `https://www.komoot.de/tour/${tour_id}/embed${show_more ? "?": ""}${show_height ? "profile=1": ""}${show_both ? "&":""}${show_gallery ? "gallery=1":""}`;
 ---
+<iframe
+    src={src}
+    width="100%"
+    height={show_height? 700 : 600}
+    scrolling="no"
+></iframe>
+<style>
+    iframe {
+        border-radius: 0.5em;
+    }
+</style>
