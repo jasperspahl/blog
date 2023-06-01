@@ -1,19 +1,26 @@
 ---
----
+import BaseLayout from "../layouts/BaseLayout.astro";
+const pageTitle = "About Me"
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width" />
-        <meta name="generator" content={Astro.generator} />
-        <title>jasper's blog | about</title>
-    </head>
-    <body>
-        <a href="/">Home</a>
-        <a href="/about">About me</a>
-        <a href="/blog">Blog</a>
-        <h1>About me</h1>
-        <p>I'm a student at DHBW Stuttgart studying Software Engineering</p>
-    </body>
-</html>
+const identity = {
+	firstName: "Jasper",
+	country: "Germany",
+	occupation: "Student",
+	hobbies: ["cycling", "programming"],
+};
+const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "Writing Docs"];
+---
+<BaseLayout pageTitle={pageTitle}>
+	<p>Here are a few facts about me:</p>
+	<ul>
+	  <li>My name is {identity.firstName}.</li>
+	  <li>I live in {identity.country} and I work as a {identity.occupation}.</li>
+	  {identity.hobbies.length >= 2 && 
+	    <li>Two of my hobbies are: {identity.hobbies[0]} and {identity.hobbies[1]}</li>
+	  } 
+	</ul>
+	<p>My skills are:</p>
+	<ul>
+	  {skills.map((skill) => <li class="skill">{skill}</li>)}
+	</ul>
+</BaseLayout>
