@@ -3,7 +3,8 @@ import {SITE_TITLE} from "../consts";
 import HeaderLink from "./HeaderLink.astro";
 ---
 <header>
-    <h2>{SITE_TITLE}</h2>
+    <h2><a href="/">{SITE_TITLE}</a></h2>
+
     <nav>
         <HeaderLink href="/">Home</HeaderLink>
         <HeaderLink href="/blog">Blog</HeaderLink>
@@ -13,10 +14,28 @@ import HeaderLink from "./HeaderLink.astro";
 </header>
 <style>
     header {
-        max-width: 80rem;
-        margin: 0  2em;
+        background: var(--surface-2);
     }
     h2 {
-        margin: 0.5em 0;
+        padding: var(--size-3);
+        font-family: var(--font-mono);
+    }
+    h2 a{
+        color: var(--text-1);
+    }
+    h2 a:visited {
+
+        color: var(--text-1);
+    }
+    nav {
+        font-family: var(--font-mono);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: var(--surface-3);
+    }
+    nav :global(a) {
+        padding-bottom: var(--size-3);
     }
 </style>

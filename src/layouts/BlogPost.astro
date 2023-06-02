@@ -1,18 +1,14 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import BaseHead from "../components/BaseHead.astro";
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import ImageCarousel from "../components/preact/ImageCarousel.tsx";
+import BaseLayout from "./BaseLayout.astro";
 
 type Props = CollectionEntry<'blog'>['data'];
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props
 ---
 
-<html lang="de">
-<head>
-    <BaseHead title={title} description={description} />
+<BaseLayout title={title} description={description} >
     <style lang="scss">
         .title {
             font-size: 2em;
@@ -27,11 +23,6 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
             font-style: italic;
         }
     </style>
-</head>
-
-<body>
-<Header />
-<main>
     <article>
         {
             heroImage && heroImage.length > 0 &&
@@ -49,7 +40,4 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
         <hr />
         <slot />
     </article>
-</main>
-<Footer />
-</body>
-</html>
+</BaseLayout>

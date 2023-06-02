@@ -1,25 +1,45 @@
 ---
-import Footer from "../components/Footer.astro";
+import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
-import "../styles/global.css"
-const {pageTitle} = Astro.props
+import Footer from "../components/Footer.astro";
+export interface Props {
+    title: string;
+    description: string;
+}
+const {title, description} = Astro.props;
 ---
-
-<html lang="en">
+<!DOCTYPE html>
+<html lang="de">
 <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle} | jasper's blog</title>
+    <BaseHead title = {title} description={description} />
 </head>
 <body>
 <Header />
-<h1>{pageTitle}</h1>
-<slot/>
-<Footer />
-<script>
-    import "../scripts/menu.js"
-</script>
+<main>
+    <slot/>
+</main>
+<Footer/>
 </body>
 </html>
+<style is:global>
+    @import "open-props/style";
+    @import "open-props/normalize";
+    :root {
+        --brand: var(--green-6);
+    }
+    h1 {
+        font-size: var(--font-size-fluid-3);
+    }
+
+    h2 {
+        font-size: var(--font-size-fluid-2);
+    }
+
+    h3 {
+        font-size: var(--font-size-fluid-1);
+    }
+    main {
+        max-width: var(--size-content-3);
+        padding: var(--size-2) var(--size-3);
+    }
+</style>
