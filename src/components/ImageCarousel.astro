@@ -1,0 +1,188 @@
+---
+import globalCss from "../styles/global.scss?raw";
+---
+
+<template id="image-carousel">
+  <style set:html={globalCss}></style>
+  <style>
+    .slider-container {
+      margin: 2em auto 1em auto;
+      position: relative;
+      max-height: 60ch;
+    }
+    .slider-container .fade {
+      animation-name: fade;
+      animation-duration: 1.5s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .slider-container .fade img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      max-height: 60ch;
+    }
+    .slider-container.hero {
+      margin-top: 0;
+      height: 35ch;
+    }
+    .slider-container.hero .fade img {
+      aspect-ratio: unset;
+      max-height: 35ch;
+      height: 35ch;
+    }
+    .slider-container .slide {
+      display: none;
+      width: 100%;
+      max-height: 100%;
+    }
+
+    .slider-buttons {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      justify-content: space-between;
+      align-items: center;
+      display: flex;
+    }
+
+    /* Next & previous buttons */
+    #prev,
+    #next {
+      cursor: pointer;
+      padding: 1em;
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      font-weight: bold;
+      font-size: 1.2em;
+      transition: 0.6s ease;
+      border: none;
+      border-radius: 0;
+      width: unset;
+    }
+
+    /* On hover, add a semi-transparent black background */
+    #prev:hover,
+    #next:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Caption text */
+    .caption {
+      position: absolute;
+      bottom: 0.5em;
+      width: 100%;
+      padding: 0.5em 1em;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      --shadow-color: 220 3% 15%;
+      --shadow-strength: 1%;
+      text-shadow: 0 1px 2px -1px hsl(var(--shadow-color) /
+            calc(var(--shadow-strength) + 9%));
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0.3;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+  <div class="slider-container">
+    <div id="placeholder" aria-busy="true"></div>
+    <div class="slider-buttons" hidden>
+      <button id="prev">&lt;</button>
+      <button id="next">&gt;</button>
+    </div>
+  </div>
+</template>
+<script>
+  class ImageCarousel extends HTMLElement {
+    private shadow: ShadowRoot;
+    private currentImage = 0;
+    private imageLength: number;
+    private autoNext?: NodeJS.Timer;
+    constructor() {
+      const templateElement = document.getElementById(
+        "image-carousel"
+      ) as HTMLTemplateElement;
+      super();
+      console.log(this.children);
+      this.shadow = this.attachShadow({ mode: "open" });
+      this.shadow.appendChild(templateElement.content.cloneNode(true));
+
+      const isHero = this.hasAttribute("hero");
+      if (isHero) {
+        this.shadow.querySelector(".slider-container")!.classList.add("hero");
+      }
+      const images = this.querySelectorAll("img");
+      this.imageLength = images.length;
+      if (this.imageLength > 0) {
+        this.initImages(images);
+        const buttons = this.shadow.querySelector(".slider-buttons")!;
+        buttons.removeAttribute("hidden");
+        const next = this.shadow.querySelector("#next")!;
+        next.addEventListener("click", () => this.nextImage());
+        const prev = this.shadow.querySelector("#prev")!;
+        prev.addEventListener("click", () => this.prevImage());
+      }
+    }
+
+    connectedCallback() {
+      const auto = this.getAttribute("auto");
+      if (auto) {
+        this.autoNext = setInterval(() => this.nextImage(), parseInt(auto));
+      }
+    }
+    disconnectedCallback() {
+      clearInterval(this.autoNext);
+    }
+    initImages(images: NodeListOf<HTMLImageElement>) {
+      const workingDiv = document.createElement("div");
+      for (let i = 0; i < images.length; i++) {
+        const imgWrapper = document.createElement("div");
+        imgWrapper.classList.add("fade");
+        if (i != this.currentImage) {
+          imgWrapper.classList.add("slide");
+        }
+        const caption = document.createElement("div");
+        caption.classList.add("caption");
+        caption.innerHTML = images[i].alt;
+        imgWrapper.appendChild(images[i].cloneNode(true));
+        imgWrapper.appendChild(caption);
+        workingDiv.appendChild(imgWrapper);
+      }
+      const placeholder = this.shadow.getElementById("placeholder")!;
+      placeholder.outerHTML = workingDiv.innerHTML;
+    }
+
+    nextImage() {
+      this.currentImage = (this.currentImage + 1) % this.imageLength;
+      this.showImage();
+    }
+    prevImage() {
+      this.currentImage =
+        (this.currentImage - 1 + this.imageLength) % this.imageLength;
+      this.showImage();
+    }
+
+    showImage() {
+      const images = this.shadow.querySelectorAll(".fade");
+      for (let i = 0; i < this.imageLength; i++) {
+        if (i == this.currentImage) {
+          images[i].classList.remove("slide");
+        } else {
+          images[i].classList.add("slide");
+        }
+      }
+    }
+  }
+
+  customElements.define("image-carousel", ImageCarousel);
+</script>

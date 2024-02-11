@@ -1,11 +1,14 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
 import FormattedDate from "@components/FormattedDate.astro";
 import ImageCarousel from "@components/preact/ImageCarousel";
+import ImgCarousel from "@components/ImageCarousel.astro";
 import BaseLayout from "./BaseLayout.astro";
 
 type Props = CollectionEntry<"blog">["data"];
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage } =
+  Astro.props as Props;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -14,9 +17,14 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       font-style: italic;
     }
   </style>
+  <ImgCarousel />
   {
     heroImage && heroImage.length > 0 && (
-      <ImageCarousel client:idle images={heroImage} hero={true} />
+      <image-carousel hero auto="5000">
+        {heroImage.map((img) => (
+          <Image src={img} alt="" />
+        ))}
+      </image-carousel>
     )
   }
   <main class="container">
