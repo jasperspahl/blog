@@ -93,6 +93,9 @@ import globalCss from "../styles/global.scss?raw";
         opacity: 1;
       }
     }
+	[hidden] {
+		display: none;
+	}
   </style>
   <div class="slider-container">
     <div id="placeholder" aria-busy="true"></div>
@@ -125,13 +128,15 @@ import globalCss from "../styles/global.scss?raw";
       this.imageLength = images.length;
       if (this.imageLength > 0) {
         this.initImages(images);
-        const buttons = this.shadow.querySelector(".slider-buttons")!;
-        buttons.removeAttribute("hidden");
-        const next = this.shadow.querySelector("#next")!;
-        next.addEventListener("click", () => this.nextImage());
-        const prev = this.shadow.querySelector("#prev")!;
-        prev.addEventListener("click", () => this.prevImage());
-      }
+		if (this.imageLength > 1) {
+			const buttons = this.shadow.querySelector(".slider-buttons")!;
+			buttons.removeAttribute("hidden");
+			const next = this.shadow.querySelector("#next")!;
+			next.addEventListener("click", () => this.nextImage());
+			const prev = this.shadow.querySelector("#prev")!;
+			prev.addEventListener("click", () => this.prevImage());
+		  }
+	  }
     }
 
     connectedCallback() {
