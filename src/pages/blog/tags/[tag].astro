@@ -8,12 +8,12 @@ export async function getStaticPaths() {
   const posts = await getCollection("blog");
   return posts
     .flatMap((post) => post.data.tags)
-    .filter((tag, pos, arr) => arr.indexOf(tag) === pos)
+    .filter((tag, pos, arr) => tag != undefined && arr.indexOf(tag) === pos)
     .map((tag) => ({
       params: { tag: tag },
       props: {
         tag,
-        posts: posts.filter((post) => post.data.tags.indexOf(tag) > -1),
+        posts: posts.filter((post) => post.data.tags != undefined && post.data.tags.indexOf(tag) > -1),
       },
     }));
 }
