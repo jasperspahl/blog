@@ -1,28 +1,35 @@
 ---
-import Layout from "../layouts/BlogPost.astro";
-const pageTitle = "About Me"
+import Layout from "@layouts/BlogPost.astro";
+const pageTitle = "About Me";
 
 const identity = {
-	firstName: "Jasper",
-	country: "Germany",
-	occupation: "Student",
-	hobbies: ["cycling", "programming"],
+  firstName: "Jasper",
+  country: "Germany",
+  occupation: "Student",
+  hobbies: ["cycling", "programming"],
 };
-const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "Writing Docs"];
+const skills = ["HTML", "CSS", "JavaScript", "React", "Astro"];
 ---
-<Layout title="About me"
-		pubDate={new Date("1. Juli 2023")}
-		updatedDate={new Date("1. Juli 2023")}
+
+<Layout
+  title="About me"
+  pubDate={new Date("1. Juli 2023")}
+  updatedDate={new Date("1. Juli 2023")}
 >
-	<p>Here are a few facts about me:</p>
-	<ul>
-	  <li>My name is {identity.firstName}.</li>
-	  <li>I live in {identity.country} and I work as a {identity.occupation}.</li>
-	  {identity.hobbies.length >= 2 && 
-	    <li>Two of my hobbies are: {identity.hobbies[0]} and {identity.hobbies[1]}</li>
-	  } 
-	</ul>
-	<p>My skills are:</p>
-	<ul>
-	  {skills.map((skill) => <li class="skill">{skill}</li>)}
-	</ul>
+  <p>Here are a few facts about me:</p>
+  <ul>
+    <li>My name is {identity.firstName}.</li>
+    <li>I live in {identity.country} and I work as a {identity.occupation}.</li>
+    {
+      identity.hobbies.length >= 2 && (
+        <li>
+          Two of my hobbies are: {identity.hobbies[0]} and {identity.hobbies[1]}
+        </li>
+      )
+    }
+  </ul>
+  <p>My skills are:</p>
+  <ul>
+    {skills.map((skill) => <li class="skill">{skill}</li>)}
+  </ul>
+</Layout>

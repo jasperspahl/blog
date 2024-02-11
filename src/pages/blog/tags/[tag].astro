@@ -1,0 +1,46 @@
+---
+import { CollectionEntry, CollectionKey, getCollection } from "astro:content";
+import Layout from "@layouts/BaseLayout.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../../consts";
+import BlogLink from "@components/BlogLink.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts
+    .flatMap((post) => post.data.tags)
+    .filter((tag, pos, arr) => arr.indexOf(tag) === pos)
+    .map((tag) => ({
+      params: { tag: tag },
+      props: {
+        tag,
+        posts: posts.filter((post) => post.data.tags.indexOf(tag) > -1),
+      },
+    }));
+}
+
+type Post = CollectionEntry<"blog">;
+
+type Props = {
+  tag: string;
+  posts: Post[];
+};
+
+const { tag, posts }: Props = Astro.props;
+---
+
+<Layout title={`${tag} | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+  <main class="container">
+    <ul>
+      {
+        posts.map((post) => (
+          <BlogLink
+            pubDate={post.data.pubDate}
+            title={post.data.title}
+            tags={post.data.tags}
+            slug={post.slug}
+          />
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

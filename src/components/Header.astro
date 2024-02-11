@@ -2,40 +2,26 @@
 import {SITE_TITLE} from "../consts";
 import HeaderLink from "./HeaderLink.astro";
 ---
-<header>
-    <h2><a href="/">{SITE_TITLE}</a></h2>
-
+<header class="container-fluid">
     <nav>
-        <HeaderLink href="/">Home</HeaderLink>
-        <HeaderLink href="/blog">Blog</HeaderLink>
-        <HeaderLink href="/about">About</HeaderLink>
-        <HeaderLink href="https://github.com/jasperspahl" target="_blank">Github</HeaderLink>
+        <ul>
+            <li>
+                <a href="/" class="contrast"><strong>{SITE_TITLE}</strong></a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <HeaderLink href="/">Home</HeaderLink>
+            </li>
+            <li>
+                <HeaderLink href="/blog">Blog</HeaderLink>
+            </li>
+            <li>
+                <HeaderLink href="/about">About</HeaderLink>
+            </li>
+            <li>
+                <HeaderLink href="https://github.com/jasperspahl" target="_blank">Github</HeaderLink>
+            </li>
+        </ul>
     </nav>
 </header>
-<style>
-    header {
-        background: var(--surface-2);
-    }
-    h2 {
-        padding: var(--size-3);
-        font-family: var(--font-mono);
-    }
-    h2 a{
-        color: var(--text-1);
-    }
-    h2 a:visited {
-
-        color: var(--text-1);
-    }
-    nav {
-        font-family: var(--font-mono);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background: var(--surface-3);
-    }
-    nav :global(a) {
-        padding-bottom: var(--size-3);
-    }
-</style>

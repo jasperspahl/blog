@@ -1,0 +1,25 @@
+---
+import FormattedDate from "./FormattedDate.astro";
+
+const { pubDate, slug, title, tags = [] } = Astro.props;
+---
+
+<style lang="scss">
+  .bloglink {
+    display: flex;
+    align-items: baseline;
+    small {
+      flex: 0 0 var(--size-11);
+    }
+  }
+</style>
+<li data-tags={`[${tags.join(" ")}]`} data-blog-link>
+	<div class="bloglink">
+	  <small class="secondary">
+		<i>
+		  <FormattedDate date={pubDate} />
+		</i>
+	  </small>
+	  <a href={`/blog/${slug}/`}>{title}</a>
+	</div>
+</li>
