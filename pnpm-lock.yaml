@@ -17,6 +17,9 @@ dependencies:
   '@astrojs/sitemap':
     specifier: ^3.0.5
     version: 3.0.5
+  '@picocss/pico':
+    specifier: 2.0.0-rc4
+    version: 2.0.0-rc4
   astro:
     specifier: ^4.3.5
     version: 4.3.5(sass@1.62.1)
@@ -894,6 +897,11 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
+    dev: false
+
+  /@picocss/pico@2.0.0-rc4:
+    resolution: {integrity: sha512-tiDdkvIOUlO8FDOihhHMRY0phOQAsIeIRqF/aoO0npvFhSxK9ICvez/7Vqzc+Ixz8MXD/9fpKc9eGS2k0slqDQ==}
+    engines: {node: '>=18.19.0'}
     dev: false
 
   /@preact/preset-vite@2.8.1(@babel/core@7.23.9)(preact@10.15.1)(vite@5.1.1):

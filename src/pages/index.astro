@@ -1,10 +1,13 @@
 ---
-import {SITE_DESCRIPTION, SITE_TITLE} from "../consts";
-import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import BaseLayout from "@layouts/BaseLayout.astro";
 ---
+
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<hgroup>
-		<h1>Home</h1>
-		<p>{SITE_DESCRIPTION}</p>
-	</hgroup>
+  <main class="container">
+    <hgroup>
+      <h1>Home</h1>
+      <p>{SITE_DESCRIPTION}</p>
+    </hgroup>
+  </main>
 </BaseLayout>

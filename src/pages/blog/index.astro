@@ -1,48 +1,96 @@
 ---
-import {getCollection} from "astro:content";
-import {SITE_DESCRIPTION, SITE_TITLE} from "../../consts";
-import BaseHead from "../../components/BaseHead.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
-import FormattedDate from "../../components/FormattedDate.astro";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import BlogLink from "@components/BlogLink.astro";
 
-const posts = (await getCollection('blog')).sort(
-    (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+const posts = (await getCollection("blog")).sort(
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
+const tags = posts
+  .flatMap((post) => post.data.tags)
+  .filter((tag, pos, arr) => arr.indexOf(tag) === pos);
 ---
+
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-<style>
+  <style lang="scss">
     ul {
-        list-style-type: none;
-        padding: unset;
+      list-style-type: none;
+      padding: unset;
+      :global(li) {
+        list-style: none;
+      }
     }
-    ul li {
-        display: flex;
-        align-items: baseline;
+    #tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-around;
     }
-    ul li :global(time) {
-        flex: 0 0 var(--size-11);
-        font-style: italic;
-        font-size: var(--font-size-0);
-        font-family: var(--font-mono);
-        color: var(--text-1);
+    [hidden] {
+      display: none;
     }
-    ul li a:visited {
-        color: var(--link-visited);
-    }
-</style>
-<section>
-	<h1>Blog</h1>
+  </style>
+  <main class="container">
+    <form role="search">
+      <input type="search" name="search" id="search" />
+      <input type="reset" class="primary" id="clearSearch" />
+    </form>
+    <h1>Blog</h1>
     <ul>
-        {
-            posts.map(post => (
-                <li>
-                    <FormattedDate date={post.data.pubDate} />
-                    <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
-                </li>
-            ))
-        }
+      {
+        posts.map((post) => (
+          <BlogLink
+            pubDate={post.data.pubDate}
+            title={post.data.title}
+            tags={post.data.tags}
+            slug={post.slug}
+          />
+        ))
+      }
     </ul>
-</section>
+    <h3>Tags</h3>
+    <ul id="tags">
+      {
+        tags.map((tag) => (
+          <li>
+            <a href={`/blog/tags/${tag}`}>{tag}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+  <script is:inline>
+    const form = document.querySelector("form[role=search]");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+    });
+    const searchInput = document.querySelector("#search");
+    const clearSearch = document.querySelector("#clearSearch");
+    const blogLinks = document.querySelectorAll("[data-blog-link]");
+
+    searchInput.addEventListener("keydown", () => {
+      const searchTerms = searchInput.value
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .split(" ");
+      blogLinks.forEach((link) => {
+        const searchString = `${link.textContent} ${link.dataset.tags}`
+          .toLowerCase()
+          .trim()
+          .normalize("NFD")
+          .replace(/\p{Diacritic}/gu, "");
+        link.hidden = !searchTerms.every((term) => searchString.includes(term));
+      });
+    });
+
+    clearSearch.addEventListener("click", () => {
+      searchInput.value = "";
+      blogLinks.forEach((link) => {
+        link.hidden = false;
+      });
+    });
+  </script>
 </BaseLayout>

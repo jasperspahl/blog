@@ -1,43 +1,38 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import FormattedDate from "../components/FormattedDate.astro";
-import ImageCarousel from "../components/preact/ImageCarousel.tsx";
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "@components/FormattedDate.astro";
+import ImageCarousel from "@components/preact/ImageCarousel";
 import BaseLayout from "./BaseLayout.astro";
 
-type Props = CollectionEntry<'blog'>['data'];
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props
+type Props = CollectionEntry<"blog">["data"];
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} >
-    <style lang="scss">
-        .title {
-            font-size: 2em;
-            margin: 0.25em 0 0;
-        }
-
-        hr {
-            border-top: 1px solid #ddd;
-            margin: 1rem 0;
-        }
-        .last-updated-on {
-            font-style: italic;
-        }
-    </style>
-    <article>
-        {
-            heroImage && heroImage.length > 0 &&
-            <ImageCarousel client:idle images={heroImage}/>
-        }
-        <h1 class="title">{title}</h1>
-        <FormattedDate date={pubDate} />
-        {
-            updatedDate && (
-                        <div class="last-updated-on">
-                            Zuletzt bearbeiten am <FormattedDate date={updatedDate} />
-                        </div>
-            )
-        }
-        <hr />
-        <slot />
-    </article>
+<BaseLayout title={title} description={description}>
+  <style>
+    .last-updated-on {
+      font-style: italic;
+    }
+  </style>
+  {
+    heroImage && heroImage.length > 0 && (
+      <ImageCarousel client:idle images={heroImage} hero={true} />
+    )
+  }
+  <main class="container">
+    <hgroup>
+      <h1 class="title">{title}</h1>
+      <h5 class="subtitle">{description}</h5>
+      <p><FormattedDate date={pubDate} /></p>
+      {
+        updatedDate && (
+          <p class="last-updated-on">
+            Zuletzt bearbeiten am <FormattedDate date={updatedDate} />
+          </p>
+        )
+      }
+    </hgroup>
+    <hr />
+    <slot />
+  </main>
 </BaseLayout>
