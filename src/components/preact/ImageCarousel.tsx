@@ -25,7 +25,7 @@ export default function ImageCarousel({images}:ImageCarouselProps) {
             <div className="slider-container">
                 {images.map((image, i) => (
                     <div className={i === currentIndex ? "fade": "slide fade"}>
-                        <img src={image.src} alt={image.alt}>
+                        <img src={image.src} alt={image.alt || ""}>
                         </img>
                         <div className="caption">{image.alt}</div>
                     </div>

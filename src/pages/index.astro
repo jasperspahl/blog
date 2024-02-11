@@ -3,5 +3,8 @@ import {SITE_DESCRIPTION, SITE_TITLE} from "../consts";
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<h1>Home</h1>
+	<hgroup>
+		<h1>Home</h1>
+		<p>{SITE_DESCRIPTION}</p>
+	</hgroup>
 </BaseLayout>
