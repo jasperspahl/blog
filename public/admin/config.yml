@@ -12,6 +12,10 @@ collections:
     folder: "src/content/blog"
     create: true
     slug: "{{slug}}"
+    extension: mdx
+    format: frontmatter
+    media_folder: ''
+    public_folder: './'
     fields: 
       - {label: "Title", name: title, widget: string}
       - {label: "Description", name: description, widget: string}
